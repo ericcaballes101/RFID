@@ -36,7 +36,7 @@ h1{font-size:28px;letter-spacing:-.02em;margin:0;font-weight:700}
 .sub{color:var(--ink-2);margin:4px 0 0;font-size:14px}
 .badge{font-size:12px;color:var(--ink-2);border:1px solid var(--line);background:var(--surface);padding:4px 10px;border-radius:99px}
 .card{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:18px}
-.steps{display:grid;grid-template-columns:1fr 1.7fr 1.3fr;gap:14px;margin-bottom:14px}
+.steps{display:grid;grid-template-columns:1fr 1.5fr 1.25fr 1.15fr;gap:14px;margin-bottom:14px}
 .step-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .num{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg);font-weight:700;font-size:13px;display:grid;place-items:center;flex:none}
 .step-h h2{font-size:15px;margin:0;font-weight:650}
@@ -114,6 +114,13 @@ table.tx input{width:96px;text-align:right}
 table.tx td.c,table.tx th.c{text-align:center}
 table.tx tfoot td{position:sticky;bottom:0;background:var(--surface-2);border-top:1px solid var(--axis)}
 .split{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.badge-s{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:650;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.badge-s.ok{background:var(--good-bg);color:var(--good)} .badge-s.rev{background:var(--warn-bg);color:var(--warn)} .badge-s.none{background:var(--bad-bg);color:var(--bad)} .badge-s.def{background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line)}
+.defgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.defgrid input{width:100%}
+details summary{cursor:pointer;font-size:13px;color:var(--ink-2)}
+table.tx select.vrpick{max-width:150px;padding:3px 6px;font-size:12.5px}
+@media (max-width:1180px){.steps{grid-template-columns:1fr 1fr}}
 @media (max-width:960px){
   .steps,.grid2{grid-template-columns:1fr}
   .kpis{grid-template-columns:1fr 1fr}.kpi.hero{grid-column:1/-1}
@@ -163,15 +170,36 @@ table.tx tfoot td{position:sticky;bottom:0;background:var(--surface-2);border-to
       <div class="msg" id="msg" role="status"></div>
     </div>
 
+    <div class="card" id="reqCard">
+      <div class="step-h"><span class="num">3</span><h2>Request file</h2></div>
+      <p class="hint">Upload the Request / VR trip log (Excel). Each toll entry is looked up by <b>plate and date</b> and Requestor, VR, % and the charging codes are filled in. If a plate has two VRs on the same date, the one with the <b>longer KM</b> is used; no match stays blank.</p>
+      <button id="btnReq"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 11V3m0 0L5 6m3-3 3 3M3 13h10"/></svg>Choose Request file(s)</button>
+      <input type="file" id="reqFile" accept=".xlsx" multiple hidden>
+      <div class="chips" id="reqChips"></div>
+      <label class="field" style="margin-top:10px">Entry with no request found
+        <select id="unmatched"><option value="blank">Leave blank</option><option value="temp">Charge to &ldquo;Temporary Charging&rdquo;</option></select></label>
+      <details style="margin-top:8px"><summary>Default charging codes</summary>
+        <div class="defgrid">
+          <label class="field">Requestor label<input type="text" id="dReq" value="Temporary Charging"></label>
+          <label class="field">Account Code<input type="text" id="dK" value="52105"></label>
+          <label class="field">Location (T0)<input type="text" id="dT0" value="A"></label>
+          <label class="field">Department (T1)<input type="text" id="dT1" value="N0603"></label>
+          <label class="field">Allocation (T9)<input type="text" id="dT9" value="PSC"></label>
+        </div>
+        <p class="hint" style="margin:8px 0 0">Also used for reload, refund and credit lines. T2&ndash;T8 are filled with &ldquo;#&rdquo;.</p>
+      </details>
+      <div class="msg" id="reqMsg" role="status"></div>
+    </div>
+
     <div class="card">
-      <div class="step-h"><span class="num">3</span><h2>Export</h2></div>
+      <div class="step-h"><span class="num">4</span><h2>Export</h2></div>
       <div class="opts">
         <label class="field">Sheet title<input type="text" id="title"></label>
         <label class="field">Plate aliases (same vehicle, different plate on each SOA)<input type="text" id="alias" value="MK594A=NKU3088" placeholder="MK594A=NKU3088, ABC123=XYZ789"></label>
         <label class="row"><input type="checkbox" id="chkImg" checked> Paste SOA page-1 screenshots under the totals</label>
       </div>
       <button class="primary" id="btnExport" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8m0 0L5 7m3 3 3-3M3 13h10"/></svg>Download Excel</button>
-      <p class="hint" style="margin:10px 0 0">Requestor, VR, % and all charging-code columns (H&ndash;U) are left blank for you to encode.</p>
+      <p class="hint" id="exportHint" style="margin:10px 0 0">Requestor, VR, % and all charging-code columns (H&ndash;U) are left blank for you to encode.</p>
     </div>
   </section>
 
@@ -195,10 +223,13 @@ table.tx tfoot td{position:sticky;bottom:0;background:var(--surface-2);border-to
     <div class="card">
       <h3>Transactions</h3>
       <p class="cap">Exactly what will be written to the Excel sheet (columns A&ndash;G). &ldquo;Loaded Amount w/ Fee&rdquo; is not on the SOA &mdash; it defaults to the loaded amount; edit it here if you paid a fee.</p>
+      <div id="matchSummary" class="legend" style="margin-bottom:12px"></div>
       <div class="tools">
         <label class="field">Provider<select id="fProv"><option value="">All</option><option>Autosweep</option><option>Easytrip</option></select></label>
         <label class="field">Plate<select id="fPlate"><option value="">All</option></select></label>
+        <label class="field">Request match<select id="fMatch"><option value="">All</option><option value="ok">Matched</option><option value="review">Needs review</option><option value="none">No request found</option></select></label>
         <label class="field">Search<input type="text" id="fSearch" placeholder="Entry, tollway, date…"></label>
+        <label class="row" id="tWrap" style="display:none"><input type="checkbox" id="chkT"> Show all code columns</label>
         <span class="n" id="rowCount" style="font-size:12.5px;color:var(--ink-3);margin-left:auto"></span>
       </div>
       <div class="tbl-wrap"><table class="tx" id="tx"></table></div>
@@ -208,7 +239,7 @@ table.tx tfoot td{position:sticky;bottom:0;background:var(--surface-2);border-to
 
 <section id="paneCharge" hidden>
   <div class="card" style="margin-bottom:14px">
-    <div class="step-h"><span class="num">4</span><h2>Upload completed monthly sheets</h2></div>
+    <div class="step-h"><span class="num">5</span><h2>Upload completed monthly sheets</h2></div>
     <p class="hint">Upload the Excel file after you have encoded the charging codes (same layout as the export). Each month is remembered in this browser, so the dashboard builds up through the fiscal year. Uploading a month again replaces it.</p>
     <div class="xl-drop" id="xlDrop" tabindex="0" role="button" aria-label="Upload completed Excel files"><b>Click to choose</b> or drop one or more .xlsx files here</div>
     <input type="file" id="xlFile" accept=".xlsx" multiple hidden>
@@ -359,7 +390,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 /* ---------- pdf.js setup ---------- */
 pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(new Blob([document.getElementById('pdfworker').textContent],{type:'text/javascript'}));
 
-const state={as:null,et:null,rows:[],title:'',sheetName:'',imgs:{}};
+const state={as:null,et:null,rows:[],out:[],stat:{ok:0,review:0,none:0},choice:{},title:'',sheetName:'',imgs:{}};
 
 async function loadPdf(file){
   const buf=await file.arrayBuffer();
@@ -428,7 +459,7 @@ function parseAutosweep(lines){
     if(rest.length&&/^[A-Z]+\d{8,}$/.test(rest[0]))rest.shift();
     if(rest.length<4||!plate){out.unparsed.push(t);continue;}
     const amount=num(rest.pop()),exit=rest.pop(),entry=rest.pop(),zone=rest.pop();
-    out.usage.push({plate,date,c:zone,d:entry,g:amount});
+    out.usage.push({plate,date,c:zone,d:entry,g:amount,tm:items[1]});
   }
   return out;
 }
@@ -451,11 +482,11 @@ function parseEasytrip(lines){
     if(/Total Credit Adjustments/i.test(t))out.stated.creditAdj=num((t.match(/Total Credit Adjustments\s+([\d,]+\.\d{2})/i)||[])[1]||0);
     if(/Total Service Fee/i.test(t))out.stated.serviceFee=num((t.match(/Total Service Fee\s+([\d,]+\.\d{2})/i)||[])[1]||0);
     // transaction lines: posted datetime + transaction datetime ...
-    const dts=[],rest=[];
+    const dts=[],tms=[],rest=[];
     for(const s of l.items){
       const a=s.match(/^(\d{4}-\d{2}-\d{2})(?:\s+(\d{2}:\d{2}:\d{2}))?$/);
-      if(a&&dts.length<2){dts.push(a[1]);continue;}
-      if(/^\d{2}:\d{2}:\d{2}$/.test(s)&&dts.length<=2&&rest.length===0)continue;
+      if(a&&dts.length<2){dts.push(a[1]);if(a[2])tms.push(a[2]);continue;}
+      if(/^\d{2}:\d{2}:\d{2}$/.test(s)&&dts.length<=2&&rest.length===0){tms.push(s);continue;}
       rest.push(s);
     }
     if(dts.length<2||rest.length<4)continue;
@@ -464,9 +495,9 @@ function parseEasytrip(lines){
     const dd=dts[1].split('-'); const date=new Date(Date.UTC(+dd[0],+dd[1]-1,+dd[2]));
     if(/^reload$/i.test(type)){out.reloads.push({date,c:'REPLENISHMENT - CASH',amount:credit});continue;}
     if(!plate){out.unparsed.push(t);continue;}
-    if(/^toll$/i.test(type))out.usage.push({plate,date,c:tollway,d:desc,g:debit,kind:'toll'});
-    else if(/credit/i.test(type))out.usage.push({plate,date,c:/^refund/i.test(desc)?'Refund':'Credit Adj',d:desc,e:credit,g:0,kind:'credit'});
-    else out.usage.push({plate,date,c:type,d:desc,g:debit,kind:'adj'});
+    if(/^toll$/i.test(type))out.usage.push({plate,date,c:tollway,d:desc,g:debit,kind:'toll',tm:tms[1]});
+    else if(/credit/i.test(type))out.usage.push({plate,date,c:/^refund/i.test(desc)?'Refund':'Credit Adj',d:desc,e:credit,g:0,kind:'credit',tm:tms[1]});
+    else out.usage.push({plate,date,c:type,d:desc,g:debit,kind:'adj',tm:tms[1]});
   }
   return out;
 }
@@ -481,11 +512,11 @@ function buildRows(){
   const rows=[];
   if(state.as){
     state.as.reloads.forEach(r=>rows.push({prov:'Autosweep',kind:'reload',a:'Corp Acct.',b:r.date,c:r.c,d:'Autosweep',e:r.amount,f:r.amount,g:null}));
-    state.as.usage.forEach(r=>rows.push({prov:'Autosweep',kind:'toll',a:r.plate,b:r.date,c:r.c,d:r.d,e:null,f:null,g:r.g}));
+    state.as.usage.forEach(r=>rows.push({prov:'Autosweep',kind:'toll',a:r.plate,b:r.date,tm:r.tm,c:r.c,d:r.d,e:null,f:null,g:r.g}));
   }
   if(state.et){
     state.et.reloads.forEach(r=>rows.push({prov:'Easytrip',kind:'reload',a:'Corp Acct.',b:r.date,c:r.c,d:'Easytrip',e:r.amount,f:r.amount,g:null}));
-    state.et.usage.forEach(r=>rows.push({prov:'Easytrip',kind:r.kind,a:r.plate,b:r.date,c:r.c,d:r.d,e:r.e==null?null:r.e,f:null,g:r.g}));
+    state.et.usage.forEach(r=>rows.push({prov:'Easytrip',kind:r.kind,a:r.plate,b:r.date,tm:r.tm,c:r.c,d:r.d,e:r.e==null?null:r.e,f:null,g:r.g}));
   }
   const am=aliasMap();
   const old=state.rows;
@@ -493,6 +524,7 @@ function buildRows(){
   // keep any "w/ fee" edits made earlier
   rows.forEach((r,i)=>{const o=old[i];if(o&&o.kind==='reload'&&r.kind==='reload'&&o.e===r.e&&o.b+''===r.b+'')r.f=o.f;});
   state.rows=rows;
+  applyCharging();
 }
 function period(){
   const e=(state.as&&state.as.periodEnd)||(state.et&&state.et.periodEnd);
@@ -544,13 +576,20 @@ async function buildWorkbook(opts){
     if(x.e!=null)row.getCell(5).value=x.e;
     if(x.f!=null)row.getCell(6).value=x.f;
     if(x.g!=null)row.getCell(7).value=x.g;
+    if(x.ch){
+      const ch=x.ch,w=(c,v)=>{if(v!=null&&v!=='')row.getCell(c).value=codeVal(v);};
+      if(ch.req)row.getCell(8).value=ch.req;
+      if(ch.vr)row.getCell(9).value=ch.vr;
+      if(ch.pct!=null)row.getCell(10).value=ch.pct;
+      w(11,ch.k);ch.t.forEach((v,i)=>w(12+i,v));
+    }
     r++;
   };
   if(blank){
     for(let i=0;i<40;i++){ws.getRow(r).height=16;styleRow(ws.getRow(r));r++;}
     return wb;
   }
-  const rows=state.rows;
+  const rows=state.out;
   const secs={};
   const totals=[];
   const section=(prov)=>{
@@ -633,7 +672,7 @@ document.addEventListener('drop',e=>{
   const fs=[...e.dataTransfer.files];
   const pdfs=fs.filter(f=>/\.pdf$/i.test(f.name)||f.type==='application/pdf');
   const xls=fs.filter(f=>/\.xlsx$/i.test(f.name));
-  if(xls.length){showTab('chg');handleXlsx(xls);}
+  if(xls.length){handleXlsx(xls);}
   if(pdfs.length){showTab('soa');handleFiles(pdfs);}
 });
 
@@ -674,6 +713,7 @@ function slotUI(){
 function refresh(){
   slotUI();
   buildRows();
+  reqUI();
   const has=state.rows.length>0;
   $('#btnExport').disabled=!has;
   $('#results').style.display=has?'block':'none';
@@ -825,21 +865,56 @@ function filters(){
   sel.innerHTML='<option value="">All</option>'+plates.map(p=>`<option>${esc(p)}</option>`).join('');
   if(plates.includes(cur))sel.value=cur;
 }
+function statGroup(x){
+  if(x.kind!=='toll'||!REQ.rowsAll.length)return '';
+  return x.st==='ok'||x.st==='chosen'||x.st==='km'||x.st==='time'?'ok':(x.st==='none'?'none':'review');
+}
 function table(){
-  const fp=$('#fProv').value,fl=$('#fPlate').value,q=$('#fSearch').value.trim().toLowerCase();
-  const vis=state.rows.filter(x=>(!fp||x.prov===fp)&&(!fl||x.a===fl)&&(!q||[x.a,x.c,x.d,mdy(x.b)].join(' ').toLowerCase().includes(q)));
-  $('#rowCount').textContent=vis.length+' of '+state.rows.length+' rows';
-  const head='<thead><tr><th>Provider</th><th>Plate No.</th><th>Date</th><th>Tollway</th><th>Entry / description</th><th class="r">Loaded</th><th class="r">Loaded w/ fee</th><th class="r">Debit</th></tr></thead>';
+  const fp=$('#fProv').value,fl=$('#fPlate').value,fm=$('#fMatch').value,q=$('#fSearch').value.trim().toLowerCase();
+  const showCh=REQ.rowsAll.length>0,showT=showCh&&$('#chkT').checked;
+  $('#tWrap').style.display=showCh?'':'none';
+  $('#fMatch').closest('label').style.display=showCh?'':'none';
+  const vis=state.out.filter(x=>(!fp||x.prov===fp)&&(!fl||x.a===fl)&&(!fm||statGroup(x)===fm)&&(!q||[x.a,x.c,x.d,mdy(x.b),x.ch&&x.ch.req,x.ch&&x.ch.vr,x.ch&&x.ch.k].join(' ').toLowerCase().includes(q)));
+  $('#rowCount').textContent=vis.length+' of '+state.out.length+' rows';
+  const T=['Location (T0)','Department (T1)','Project Exp. (T2)','Employee (T3)','Funding (T4)','Design (T5)','Logframe (T6)','Program (T7)','Motivation (T8)','Allocation (T9)'];
+  const head='<thead><tr><th>Provider</th><th>Plate No.</th><th>Date</th><th>Time</th><th>Tollway</th><th>Entry / description</th><th class="r">Loaded</th><th class="r">Loaded w/ fee</th><th class="r">Debit</th>'+
+    (showCh?'<th>Request match</th><th>Requestor</th><th class="r">%</th><th>Account Code</th>'+(showT?T.map(h=>`<th>${h}</th>`).join(''):''):'')+'</tr></thead>';
   const body=vis.map(x=>{
-    const i=state.rows.indexOf(x);
-    return `<tr class="${x.kind==='reload'?'rl':''}"><td><span class="dot" style="background:${PROV[x.prov]};display:inline-block;margin-right:7px"></span>${x.prov}</td><td>${esc(x.a)}</td><td>${mdy(x.b)}</td><td>${esc(x.c)}</td><td class="d">${esc(x.d)}</td>`+
+    let ch='';
+    if(showCh){
+      const c=x.ch||{t:[]};
+      let m='';
+      if(x.kind==='toll'){
+        const pick=()=>`<select class="vrpick" data-key="${esc(x.key)}" aria-label="Choose VR">`+x.cands.map((v,i)=>`<option value="${esc(v)}"${v===x.vrSel?' selected':''}>${esc(v)} · ${x.kms[i]} km</option>`).join('')+'</select>';
+        if(x.st==='ok')m=`<span class="badge-s ok">✓ ${esc(c.vr||'')}</span>`;
+        else if(x.st==='none')m='<span class="badge-s none">✗ No request</span>';
+        else if(x.st==='km')m=pick()+' <span class="badge-s ok" title="Two VRs on this plate and date — the longer kilometer record was used">✓ longer km</span>';
+        else if(x.st==='time')m=pick()+' <span class="badge-s ok" title="Equal kilometers — the VR travel window containing the toll time was used">✓ by time</span>';
+        else if(x.st==='chosen')m=pick()+' <span class="badge-s ok">✓ your pick</span>';
+        else m=pick()+' <span class="badge-s rev" title="Equal kilometers — choose the VR">! choose</span>';
+        if(x.sumPct!=null&&Math.abs(x.sumPct-100)>0.01&&x.st!=='none')m+=` <span class="badge-s rev" title="Split percentages for this VR add up to ${x.sumPct}%">! ${x.sumPct}%</span>`;
+      }else m='<span class="badge-s def">default</span>';
+      ch=`<td>${m}</td><td>${esc(c.req||'')}</td><td class="r">${c.pct==null?'':c.pct}</td><td>${esc(c.k==null?'':c.k)}</td>`+(showT?c.t.map(v=>`<td>${esc(v==null?'':v)}</td>`).join(''):'');
+    }
+    return `<tr class="${x.kind==='reload'?'rl':''}"><td><span class="dot" style="background:${PROV[x.prov]};display:inline-block;margin-right:7px"></span>${x.prov}</td><td>${esc(x.a)}</td><td>${mdy(x.b)}</td><td>${esc(x.tm||'')}</td><td>${esc(x.c)}</td><td class="d">${esc(x.d)}</td>`+
       `<td class="r">${x.e!=null?fmt(x.e):''}</td>`+
-      `<td class="r">${x.kind==='reload'?`<input type="number" step="0.01" data-i="${i}" value="${x.f}" aria-label="Loaded amount with fee">`:''}</td>`+
-      `<td class="r">${x.g!=null?fmt(x.g):''}</td></tr>`;
+      `<td class="r">${x.kind==='reload'?`<input type="number" step="0.01" data-bi="${x.bi}" value="${x.f}" aria-label="Loaded amount with fee">`:''}</td>`+
+      `<td class="r">${x.g!=null?fmt(x.g):''}</td>${ch}</tr>`;
   }).join('');
   $('#tx').innerHTML=head+'<tbody>'+body+'</tbody>';
+  matchSummary();
 }
-$('#tx').addEventListener('change',e=>{const i=e.target.dataset&&e.target.dataset.i;if(i!=null)state.rows[+i].f=parseFloat(e.target.value)||0;});
+function matchSummary(){
+  const s=state.stat,el=$('#matchSummary');
+  if(!REQ.rowsAll.length){el.innerHTML='';return;}
+  el.innerHTML=`<span class="badge-s ok">✓ ${s.ok} matched</span>`+(s.km?`<span class="badge-s ok" title="Two VRs on the same plate and date; the longer KM was used">of which ${s.km} by longer km</span>`:'')+`<span class="badge-s rev">! ${s.review} need review</span><span class="badge-s none">✗ ${s.none} no request found</span><span style="color:var(--ink-3)">toll lines, matched on plate and date</span>`;
+}
+$('#tx').addEventListener('change',e=>{
+  const d=e.target.dataset||{};
+  if(d.bi!=null){const v=parseFloat(e.target.value)||0;state.rows[+d.bi].f=v;state.out.forEach(o=>{if(o.bi===+d.bi)o.f=v;});}
+  if(d.key){state.choice[d.key]=e.target.value;applyCharging();table();reqUI();}
+});
+$('#fMatch').addEventListener('change',table);$('#chkT').addEventListener('change',table);
 ['fProv','fPlate'].forEach(id=>$('#'+id).addEventListener('change',table));
 $('#fSearch').addEventListener('input',table);
 $('#title').addEventListener('input',()=>{state.titleEdited=true;});
@@ -938,21 +1013,25 @@ async function handleXlsx(files){
   const msg=$('#xlMsg');
   if(!files.length){msg.textContent='Please choose .xlsx files.';msg.className='msg err';return;}
   msg.textContent='Reading…';msg.className='msg';
-  const ok=[],bad=[];
+  const ok=[],bad=[],reqDone=[];
   for(const f of files){
     try{
       const wb=new ExcelJS.Workbook();await wb.xlsx.load(await f.arrayBuffer());
+      if(await tryRequest(wb,f.name)){reqDone.push(f.name);continue;}
       let n=0;
       for(const ws of wb.worksheets){
         const p=parseCompletedSheet(ws);
         if(p&&p.rows.length){cs.months[p.key]={key:p.key,label:p.label,fy:p.fy,title:p.title,file:f.name,sheet:ws.name,rows:p.rows};ok.push(p.label+' ('+p.rows.length+' lines)');n++;}
       }
-      if(!n)bad.push(f.name+': no sheet in the toll-fee layout found (needs “PLATE NO.” and “DEBIT” headers).');
+      if(!n)bad.push(f.name+': not recognised: it is neither a completed toll-fee sheet (“PLATE NO.” and “DEBIT” headers) nor a VR / request file (“VR Number”, “Plate #”, “Date & Time Out”).');
     }catch(err){console.error(err);bad.push(f.name+': could not be read ('+err.message+').');}
   }
   lsSave();
   if(ok.length)cs.month='';
+  if(reqDone.length){refresh();}
+  if(ok.length){if($('#paneCharge').hidden)showTab('chg');}else if(reqDone.length&&!bad.length){showTab('soa');}
   renderCharge();
+  reqUI(bad);
   const parts=[];
   if(ok.length)parts.push('Loaded '+ok.join(', ')+'.');
   if(!lsOk)parts.push('Could not save in this browser — months will be forgotten when you close the page.');
@@ -1104,7 +1183,168 @@ $('#tabSoa').addEventListener('click',()=>showTab('soa'));
 $('#tabChg').addEventListener('click',()=>showTab('chg'));
 renderCharge();
 
-window.__state=state;window.__cs=cs;
+/* ================= Request file: look up charging codes ================= */
+const REQ={rowsAll:[],byPlate:new Map(),files:[]};
+const normPlate=p=>String(p==null?'':p).toUpperCase().replace(/[^A-Z0-9]/g,'');
+const dkey=d=>d?d.toISOString().slice(0,10):'';
+const codeVal=v=>{if(typeof v==='number')return v;const s=String(v).trim();return /^[1-9]\d{0,8}$/.test(s)?Number(s):s;};
+const cc=v=>{v=v==null?'':String(v).trim();return v===''?null:codeVal(v);};
+const RQMAP={pct:'%',k:'accountcode',vr:'vrnumber',req:'requisitioner',plate:'plate',out:'datetimeout',win:'departurereturndate',km:'kmtotal',kmf:'kmfrom',kmt:'kmto'};
+for(let i=0;i<10;i++)RQMAP['t'+i]='t'+i;
+function rawVal(c){const v=cv(c);if(v==null)return null;if(v instanceof Date)return v;return typeof v==='string'?(v.trim()||null):v;}
+function winParse(s){
+  if(s==null)return null;
+  const m=[...String(s).matchAll(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/g)];
+  if(!m.length)return null;
+  const f=m[0],l=m[m.length-1];
+  const a=Date.UTC(+f[1],+f[2]-1,+f[3],f[4]?+f[4]:0,f[5]?+f[5]:0);
+  const b=Date.UTC(+l[1],+l[2]-1,+l[3],l[4]?+l[4]:23,l[5]?+l[5]:59);
+  return [a,Math.max(a,b)];
+}
+function parseRequestWs(ws,file){
+  let hr=0;const cols={};
+  const hmap=r=>{const m={};if(r>ws.rowCount)return m;ws.getRow(r).eachCell({includeEmpty:false},(cell,ci)=>{const v=cv(cell);if(typeof v==='string')m[v.toLowerCase().replace(/[^a-z0-9%]/g,'')]=ci;});return m;};
+  for(let r=1;r<=Math.min(ws.rowCount,12)&&!hr;r++){
+    const m1=hmap(r),m2=hmap(r+1);
+    // the layout may split the header over two rows (labels on one row, % / Account Code / T0-T9 on the next)
+    const second=(m2['accountcode']!=null||m2['%']!=null||m2['t0']!=null);
+    const m=second?{...m2,...m1}:m1;
+    if(m['vrnumber']!=null&&m['plate']!=null&&m['datetimeout']!=null){hr=second?r+1:r;for(const k in RQMAP)if(m[RQMAP[k]]!=null)cols[k]=m[RQMAP[k]];}
+  }
+  if(!hr)return null;
+  const out=[];
+  for(let r=hr+1;r<=ws.rowCount;r++){
+    const g=k=>cols[k]?rawVal(ws.getCell(r,cols[k])):null;
+    const plate=normPlate(g('plate')),vr=g('vr');
+    if(!plate||!vr)continue;
+    let d=g('out'),date=null;
+    if(d instanceof Date)date=d.toISOString().slice(0,10);
+    else if(d!=null){const m=String(d).match(/(\d{4})-(\d{2})-(\d{2})/);if(m)date=m[0];else{const x=toDate(d);if(x)date=x.toISOString().slice(0,10);}}
+    if(!date)continue;
+    let p=numOrNull(g('pct'));if(p!=null&&p>0&&p<=1)p*=100;
+    let km=numOrNull(g('km'));
+    if(km==null){const a=numOrNull(g('kmf')),b=numOrNull(g('kmt'));km=(a!=null&&b!=null)?Math.max(0,b-a):0;}
+    out.push({km,plate,vr:String(vr).trim(),req:g('req')==null?null:String(g('req')).trim(),pct:p==null?100:p,k:g('k'),t:[0,1,2,3,4,5,6,7,8,9].map(i=>g('t'+i)),date,win:winParse(g('win')),file});
+  }
+  return out;
+}
+async function tryRequest(wb,name){
+  let rows=null;
+  for(const ws of wb.worksheets){const r=parseRequestWs(ws,name);if(r&&r.length){rows=(rows||[]).concat(r);}else if(r&&!rows)rows=[];}
+  if(rows==null)return false;
+  REQ.files=REQ.files.filter(f=>f.name!==name);
+  REQ.rowsAll=REQ.rowsAll.filter(r=>r.file!==name).concat(rows);
+  REQ.files.push({name,n:rows.length});
+  rebuildReq();
+  return true;
+}
+function rebuildReq(){
+  REQ.byPlate=new Map();
+  REQ.rowsAll.forEach(r=>{
+    let pg=REQ.byPlate.get(r.plate);if(!pg){pg=new Map();REQ.byPlate.set(r.plate,pg);}
+    let g=pg.get(r.vr);if(!g){g={vr:r.vr,req:r.req,win:r.win,dates:new Set(),linesByDate:new Map(),allLines:[],kmByDate:new Map()};pg.set(r.vr,g);}
+    if(!g.req)g.req=r.req;
+    if(r.win){g.win=g.win?[Math.min(g.win[0],r.win[0]),Math.max(g.win[1],r.win[1])]:r.win;}
+    g.dates.add(r.date);
+    g.kmByDate.set(r.date,Math.max(g.kmByDate.get(r.date)||0,r.km||0));
+    const sig=JSON.stringify([r.pct,String(r.k),r.t.map(String)]);
+    const ln={pct:r.pct,k:r.k,t:r.t,sig};
+    let L=g.linesByDate.get(r.date);if(!L){L=[];g.linesByDate.set(r.date,L);}
+    if(!L.some(x=>x.sig===sig))L.push(ln);
+    if(!g.allLines.some(x=>x.sig===sig))g.allLines.push(ln);
+  });
+}
+function reqRange(){
+  const ds=REQ.rowsAll.map(r=>r.date).sort();
+  return ds.length?[ds[0],ds[ds.length-1]]:null;
+}
+function matchRow(plate,dateStr,tm,choice){
+  const pg=REQ.byPlate.get(normPlate(plate));
+  if(!pg)return {status:'none'};
+  const cands=[...pg.values()].filter(g=>g.dates.has(dateStr));
+  if(!cands.length)return {status:'none'};
+  const km=g=>g.kmByDate.get(dateStr)||0;
+  let ordered=cands.slice().sort((a,b)=>km(b)-km(a));
+  let status='ok';
+  if(cands.length>1){
+    // two or more VRs on the same plate and date: the longer kilometer record wins
+    const tie=ordered.filter(g=>km(g)===km(ordered[0]));
+    if(tie.length===1)status='km';
+    else{
+      // equal KM: use the travel-window time if it singles one out, otherwise ask
+      let ts=null;const tmm=String(tm||'').match(/^(\d{1,2}):(\d{2})/);
+      if(tmm){const [y,m,d]=dateStr.split('-').map(Number);ts=Date.UTC(y,m-1,d,+tmm[1],+tmm[2]);}
+      const bt=tie.filter(g=>ts!=null&&g.win&&ts>=g.win[0]&&ts<=g.win[1]);
+      if(bt.length===1){ordered=[bt[0],...ordered.filter(x=>x!==bt[0])];status='time';}
+      else status='ambiguous';
+    }
+  }
+  let chosen=ordered[0];
+  if(choice&&cands.length>1){const c=cands.find(g=>g.vr===choice);if(c){chosen=c;status='chosen';}}
+  const lines=chosen.linesByDate.get(dateStr)||chosen.allLines;
+  return {status,cands:ordered.map(g=>g.vr),kms:ordered.map(km),g:chosen,lines};
+}
+const chBlank=()=>({req:null,vr:null,pct:null,k:null,t:Array(10).fill(null)});
+function getDef(){
+  const v=id=>cc($('#'+id).value);
+  return {req:($('#dReq').value||'Temporary Charging').trim(),k:v('dK'),t:[v('dT0'),v('dT1'),'#','#','#','#','#','#','#',v('dT9')]};
+}
+const defLine=withReq=>{const d=getDef();return {req:withReq?d.req:null,vr:null,pct:100,k:d.k,t:d.t};};
+function chargingFor(b){
+  if(!REQ.rowsAll.length)return {sig:'blank',lines:[chBlank()],st:'blank'};
+  if(b.kind==='reload')return {sig:'def-r',lines:[defLine(false)],st:'def'};
+  if(b.kind!=='toll')return {sig:'def-c',lines:[defLine(false)],st:'def'};
+  const key=b.a+'|'+dkey(b.b);
+  const m=matchRow(b.a,dkey(b.b),b.tm,state.choice[key]);
+  if(m.status==='none'){
+    return $('#unmatched').value==='temp'?{sig:'tmp',lines:[defLine(true)],st:'none',key}:{sig:'blank',lines:[chBlank()],st:'none',key};
+  }
+  const lines=m.lines.map(l=>({req:m.g.req,vr:m.g.vr,pct:l.pct,k:l.k,t:l.t}));
+  return {sig:'m|'+m.g.vr+'|'+JSON.stringify(lines.map(l=>[l.pct,l.k,l.t])),lines,st:m.status,cands:m.cands,kms:m.kms,vr:m.g.vr,key,sumPct:sum(lines,l=>l.pct)};
+}
+function applyCharging(){
+  const base=state.rows,cf=base.map(chargingFor),out=[];
+  const stat={ok:0,review:0,none:0,km:0};
+  base.forEach((b,i)=>{if(b.kind!=='toll'||!REQ.rowsAll.length)return;const s=cf[i].st;if(s==='ok'||s==='chosen'||s==='km'||s==='time'){stat.ok++;if(s==='km')stat.km++;}else if(s==='none')stat.none++;else stat.review++;});
+  state.stat=stat;
+  let i=0;
+  while(i<base.length){
+    let j=i+1;
+    if(cf[i].lines.length>1)while(j<base.length&&cf[j].sig===cf[i].sig&&base[j].prov===base[i].prov&&base[j].a===base[i].a)j++;
+    for(const ln of cf[i].lines)for(let k=i;k<j;k++){
+      out.push({...base[k],bi:k,ch:ln,st:cf[k].st,cands:cf[k].cands,kms:cf[k].kms,key:cf[k].key,vrSel:cf[k].vr,sumPct:cf[k].sumPct});
+    }
+    i=j;
+  }
+  state.out=out;
+}
+function reqUI(extraBad){
+  const has=REQ.rowsAll.length>0;
+  $('#reqChips').innerHTML=REQ.files.map(f=>`<span class="chip">${esc(f.name.length>26?f.name.slice(0,24)+'…':f.name)} <small>${f.n} rows</small><button data-f="${esc(f.name)}" title="Remove" aria-label="Remove request file">&times;</button></span>`).join('');
+  $('#exportHint').innerHTML=has?'Requestor, VR, % and the charging codes (H&ndash;U) are filled from the request file. Check anything marked for review first.':'Requestor, VR, % and all charging-code columns (H&ndash;U) are left blank for you to encode.';
+  const msg=[];const bad=[];
+  if(has){
+    const rg=reqRange();msg.push(`${REQ.rowsAll.length} trip rows, ${REQ.byPlate.size} vehicles, ${rg[0]} to ${rg[1]}.`);
+    const pe=period();
+    if(pe&&state.rows.length){
+      const ps=((state.as&&state.as.periodStart)||(state.et&&state.et.periodStart)||pe).toISOString().slice(0,10),pEnd=pe.toISOString().slice(0,10);
+      if(rg[1]<ps||rg[0]>pEnd)bad.push(`None of these dates fall in the SOA period (${ps} to ${pEnd}) — upload that month's request file.`);
+      else{const s=state.stat;msg.push(`Matched ${s.ok} of ${s.ok+s.review+s.none} toll lines; ${s.review} to review, ${s.none} with no request.`);}
+    }
+  }
+  (extraBad||[]).forEach(x=>bad.push(x));
+  const el=$('#reqMsg');el.textContent=msg.concat(bad).join(' ');el.className='msg '+(bad.length?'warn':'');
+}
+$('#btnReq').addEventListener('click',()=>$('#reqFile').click());
+$('#reqFile').addEventListener('change',e=>{handleXlsx([...e.target.files]);e.target.value='';});
+$('#reqChips').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-f]');if(!b)return;
+  const n=b.dataset.f;REQ.files=REQ.files.filter(f=>f.name!==n);REQ.rowsAll=REQ.rowsAll.filter(r=>r.file!==n);rebuildReq();state.choice={};
+  refresh();reqUI();
+});
+['unmatched','dReq','dK','dT0','dT1','dT9'].forEach(id=>$('#'+id).addEventListener('change',()=>{if(state.rows.length){applyCharging();table();}reqUI();}));
+
+window.__state=state;window.__cs=cs;window.__req={REQ,matchRow};
 })();
 </script>
 </body>
