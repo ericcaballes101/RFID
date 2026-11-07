@@ -120,6 +120,42 @@ table.tx tfoot td{position:sticky;bottom:0;background:var(--surface-2);border-to
 .defgrid input{width:100%}
 details summary{cursor:pointer;font-size:13px;color:var(--ink-2)}
 table.tx select.vrpick{max-width:150px;padding:3px 6px;font-size:12.5px}
+button.badge-s{padding:2px 9px;gap:5px;font-size:12px;font-weight:650;border-color:transparent;border-radius:99px}
+button.badge-s.none{border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
+button.badge-s:hover{text-decoration:underline}
+dialog{border:1px solid var(--ring);border-radius:14px;padding:0;background:var(--surface);color:var(--ink);width:min(760px,94vw);max-height:92vh;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+dialog[open]{display:flex;flex-direction:column}
+dialog::backdrop{background:rgba(10,10,10,.5)}
+.dlg-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.dlg-h h2{margin:0;font-size:18px}
+.dlg-b{padding:16px 20px;overflow:auto;display:grid;gap:16px}
+.dlg-f{display:flex;gap:10px;align-items:center;padding:14px 20px;border-top:1px solid var(--line);background:var(--surface-2);border-radius:0 0 14px 14px}
+.x{border:0;background:none;font-size:22px;line-height:1;padding:4px 10px;color:var(--ink-2)}
+.evsec{border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px}
+.evsec h3{margin:0;font-size:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+textarea{font:inherit;font-size:13.5px;background:var(--surface);color:var(--ink);border:1px solid var(--axis);border-radius:7px;padding:8px 10px;width:100%;resize:vertical;min-height:70px}
+.seg{display:inline-flex;border:1px solid var(--axis);border-radius:8px;overflow:hidden;width:max-content}
+.seg label{position:relative;padding:6px 16px;cursor:pointer;font-size:13.5px;color:var(--ink-2)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--accent);color:var(--accent-ink);font-weight:650}
+.seg label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:-2px}
+.evdrop{border:1.5px dashed var(--axis);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+.evdrop.drag{border-color:var(--accent);background:var(--surface-2)}
+.evlist{display:grid;gap:8px}
+.evitem{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.evitem .th{width:48px;height:48px;border-radius:6px;object-fit:cover;background:var(--surface-2);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink-2);flex:none;overflow:hidden;border:1px solid var(--line)}
+.evitem .nm{flex:1;min-width:0;font-size:13px;word-break:break-all}
+.evitem .nm small{display:block;color:var(--ink-3)}
+.evitem button,.evitem a.btn{padding:4px 9px;font-size:12px;font-weight:600}
+a.btn{text-decoration:none;color:var(--ink);border:1px solid var(--axis);border-radius:8px;background:var(--surface)}
+button.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
+#evSum table{width:100%;border-collapse:collapse;font-size:13px}
+#evSum td,#evSum th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:left}
+#evSum th{font-size:12px;color:var(--ink-3)}
+#evSum .r{text-align:right}
+.evmsg{font-size:13px;color:var(--bad);min-height:18px}
+.evmsg.warn{color:var(--warn)}
 @media (max-width:1180px){.steps{grid-template-columns:1fr 1fr}}
 @media (max-width:960px){
   .steps,.grid2{grid-template-columns:1fr}
@@ -127,6 +163,35 @@ table.tx select.vrpick{max-width:150px;padding:3px 6px;font-size:12.5px}
   .slots{grid-template-columns:1fr}
 }
 @media print{ .steps,.tools,button{display:none!important} body{background:#fff} }
+
+.hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.bk{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.bk button{font:inherit;font-size:12.5px;padding:5px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.bk button:hover{background:var(--surface-2)}
+.bkinfo{font-size:12px;color:var(--ink-3)} .bkinfo.stale{color:var(--warn)}
+#annualCard .scroll{overflow-x:auto}
+table.ann{border-collapse:collapse;width:100%;font-size:12.5px;white-space:nowrap}
+table.ann th,table.ann td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:right}
+table.ann th:first-child,table.ann td:first-child,table.ann th.l,table.ann td.l{text-align:left}
+table.ann thead th{font-weight:600;color:var(--ink-2);border-bottom:1px solid var(--axis)}
+table.ann th.na{color:var(--ink-3);font-weight:400}
+table.ann td.na{color:var(--ink-3)}
+table.ann tr.sec td{background:var(--surface-2);font-weight:600;color:var(--ink-2);text-align:left}
+table.ann tr.tot td{font-weight:700;border-top:1px solid var(--axis)}
+table.ann td.tc,table.ann th.tc{font-weight:600;border-left:1px solid var(--line)}
+.annhead{display:flex;gap:12px;flex-wrap:wrap;align-items:end;justify-content:space-between;margin-bottom:8px}
+.annhead .btns{display:flex;gap:8px;flex-wrap:wrap}
+.annhead button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+@media print{
+  @page{size:landscape;margin:10mm}
+  body.print-rep{--bg:#fff;--surface:#fff;--surface-2:#eee;--ink:#000;--ink-2:#333;--ink-3:#666;--line:#ccc;--axis:#999;color-scheme:light;background:#fff}
+  body.print-rep *{visibility:hidden}
+  body.print-rep #annualCard,body.print-rep #annualCard *{visibility:visible}
+  body.print-rep #annualCard{position:absolute;left:0;top:0;width:100%;border:0;background:#fff;display:block!important}
+  body.print-rep #annualCard .noprint{display:none!important}
+  body.print-rep #annualCard .scroll{overflow:visible}
+  body.print-rep table.ann{font-size:10px}
+}
 </style>
 </head>
 <body>
@@ -136,7 +201,15 @@ table.tx select.vrpick{max-width:150px;padding:3px 6px;font-size:12.5px}
       <h1>Toll Fee Dashboard</h1>
       <p class="sub">Turn the Autosweep and Easytrip statements into your monthly Excel sheet, then upload it back with the charging codes to see where the toll money went.</p>
     </div>
-    <span class="badge">Runs entirely in your browser &middot; files are not uploaded anywhere</span>
+    <div class="hdr-r">
+      <span class="badge">Runs entirely in your browser &middot; files are not uploaded anywhere</span>
+      <div class="bk">
+        <button id="btnBackup" title="Save all loaded months, evidence reports and settings to one file">&#11015; Backup</button>
+        <button id="btnRestore" title="Load a backup file made earlier">&#11014; Restore</button>
+        <input type="file" id="bkFile" accept=".json,application/json" hidden>
+        <span class="bkinfo" id="bkInfo" role="status"></span>
+      </div>
+    </div>
   </header>
 
   <nav class="tabs" role="tablist">
@@ -235,6 +308,11 @@ table.tx select.vrpick{max-width:150px;padding:3px 6px;font-size:12.5px}
       <div class="tbl-wrap"><table class="tx" id="tx"></table></div>
     </div>
   </section>
+  <div class="card" id="logCard" style="display:none;margin-top:14px">
+    <div class="split"><div><h3>Evidence log: entries with no request</h3><p class="cap">Every &ldquo;no request found&rdquo; you have reported, with its status and evidence. Saved in this browser.</p></div>
+    <button id="btnLog"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8m0 0L5 7m3 3 3-3M3 13h10"/></svg>Download log (Excel)</button></div>
+    <div class="tbl-wrap"><table class="tx" id="logTbl"></table></div>
+  </div>
 </div>
 
 <section id="paneCharge" hidden>
@@ -249,12 +327,24 @@ table.tx select.vrpick{max-width:150px;padding:3px 6px;font-size:12.5px}
 
   <div id="chResults" style="display:none">
     <div class="tools">
+      <label class="field">Fiscal year (Oct&ndash;Sep)<select id="cFy"></select></label>
       <label class="field">Month<select id="cMonth"></select></label>
       <label class="field">Provider<select id="cProv"><option value="">All</option><option>Autosweep</option><option>Easytrip</option></select></label>
       <label class="field">Group by<select id="cDim"></select></label>
     </div>
     <div class="warnbox" id="cWarn"></div>
     <div class="kpis" id="cKpis"></div>
+    <div class="card" id="annualCard" style="margin-bottom:14px">
+      <div class="annhead">
+        <div><h3 id="aTitle" style="margin:0 0 2px">Annual summary</h3><p class="cap" id="aCap" style="margin:0"></p></div>
+        <div class="btns noprint">
+          <label class="field" style="margin:0">Fiscal year<select id="aFy"></select></label>
+          <button id="aXls">Download (Excel)</button>
+          <button id="aPrint">Print / save as PDF</button>
+        </div>
+      </div>
+      <div class="scroll"><table class="ann" id="aTbl"></table></div>
+    </div>
     <div class="card" id="cCheckCard" style="margin-bottom:14px;display:none">
       <h3>Check against the SOA</h3>
       <p class="cap">Amounts charged in your sheet (debit &times; %) vs. the totals on the SOA PDFs you uploaded in the first tab.</p>
@@ -284,6 +374,48 @@ table.tx select.vrpick{max-width:150px;padding:3px 6px;font-size:12.5px}
 </section>
 </div>
 <div id="tip"></div>
+<dialog id="evDlg" aria-labelledby="evTitle">
+  <div class="dlg-h"><h2 id="evTitle">No request found</h2><button type="button" class="x" id="evClose" aria-label="Close">&times;</button></div>
+  <div class="dlg-b">
+    <div id="evSum"></div>
+    <section class="evsec" id="secRep">
+      <h3>1 &middot; Clarification report</h3>
+      <div class="two">
+        <label class="field">Date reported<input type="date" id="evRepDate"></label>
+        <label class="field">Reported by (optional)<input type="text" id="evBy"></label>
+      </div>
+      <label class="field">What needs clarifying<textarea id="evNotes" placeholder="e.g. No VR on file for this plate and date. Asked the driver and requisitioner to confirm the trip."></textarea></label>
+      <div class="evgroup" data-g="ev">
+        <div class="evdrop"><button type="button" class="evadd" data-g="ev">Add screenshot or document</button><span>or drop files here, or paste a screenshot (Ctrl+V)</span></div>
+        <div class="evlist" id="lEv"></div>
+      </div>
+    </section>
+    <section class="evsec" id="secRes">
+      <h3>2 &middot; Resolution</h3>
+      <div class="seg" role="radiogroup" aria-label="Status">
+        <label><input type="radio" name="evStatus" value="open">Open</label>
+        <label><input type="radio" name="evStatus" value="resolved">Resolved</label>
+      </div>
+      <div class="two">
+        <label class="field">Date resolved<input type="date" id="evResDate"></label>
+        <label class="field">Resolved by (optional)<input type="text" id="evResBy"></label>
+      </div>
+      <label class="field">How it was resolved<textarea id="evResNotes" placeholder="e.g. VR-2026-10301 confirmed by the requisitioner; trip charged to project P225340."></textarea></label>
+      <div class="evgroup" data-g="rev">
+        <div class="evdrop"><button type="button" class="evadd" data-g="rev">Add evidence of resolution</button><span>screenshot or document &mdash; drop, browse or paste</span></div>
+        <div class="evlist" id="lRev"></div>
+      </div>
+    </section>
+    <div class="evmsg" id="evMsg" role="alert"></div>
+  </div>
+  <div class="dlg-f">
+    <button type="button" class="danger" id="evDel">Delete report</button>
+    <span style="flex:1"></span>
+    <button type="button" id="evCancel">Cancel</button>
+    <button type="button" class="primary" id="evSave">Save</button>
+  </div>
+  <input type="file" id="evFile" multiple hidden accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.eml,.msg,.ppt,.pptx">
+</dialog>
 
 <script>/**
  * @licstart The following is the entire license notice for the
@@ -887,7 +1019,7 @@ function table(){
       if(x.kind==='toll'){
         const pick=()=>`<select class="vrpick" data-key="${esc(x.key)}" aria-label="Choose VR">`+x.cands.map((v,i)=>`<option value="${esc(v)}"${v===x.vrSel?' selected':''}>${esc(v)} · ${x.kms[i]} km</option>`).join('')+'</select>';
         if(x.st==='ok')m=`<span class="badge-s ok">✓ ${esc(c.vr||'')}</span>`;
-        else if(x.st==='none')m='<span class="badge-s none">✗ No request</span>';
+        else if(x.st==='none')m=noReqBadge(x.key);
         else if(x.st==='km')m=pick()+' <span class="badge-s ok" title="Two VRs on this plate and date — the longer kilometer record was used">✓ longer km</span>';
         else if(x.st==='time')m=pick()+' <span class="badge-s ok" title="Equal kilometers — the VR travel window containing the toll time was used">✓ by time</span>';
         else if(x.st==='chosen')m=pick()+' <span class="badge-s ok">✓ your pick</span>';
@@ -907,13 +1039,17 @@ function table(){
 function matchSummary(){
   const s=state.stat,el=$('#matchSummary');
   if(!REQ.rowsAll.length){el.innerHTML='';return;}
-  el.innerHTML=`<span class="badge-s ok">✓ ${s.ok} matched</span>`+(s.km?`<span class="badge-s ok" title="Two VRs on the same plate and date; the longer KM was used">of which ${s.km} by longer km</span>`:'')+`<span class="badge-s rev">! ${s.review} need review</span><span class="badge-s none">✗ ${s.none} no request found</span><span style="color:var(--ink-3)">toll lines, matched on plate and date</span>`;
+  const nk=new Map();state.out.forEach(o=>{if(o.kind==='toll'&&o.st==='none'&&!nk.has(o.bi))nk.set(o.bi,o.key);});
+  let nRes=0,nRep=0;nk.forEach(k=>{const c=EV.cases.get(k);if(c){if(c.status==='resolved')nRes++;else nRep++;}});
+  const evNote=(nRes||nRep)?`<span class="badge-s def" title="Click ✗ in the table to open the report">${nRes} resolved · ${nRep} reported</span>`:'';
+  el.innerHTML=`<span class="badge-s ok">✓ ${s.ok} matched</span>`+(s.km?`<span class="badge-s ok" title="Two VRs on the same plate and date; the longer KM was used">of which ${s.km} by longer km</span>`:'')+`<span class="badge-s rev">! ${s.review} need review</span><span class="badge-s none">✗ ${s.none} no request found</span>${evNote}<span style="color:var(--ink-3)">toll lines, matched on plate and date</span>`;
 }
 $('#tx').addEventListener('change',e=>{
   const d=e.target.dataset||{};
   if(d.bi!=null){const v=parseFloat(e.target.value)||0;state.rows[+d.bi].f=v;state.out.forEach(o=>{if(o.bi===+d.bi)o.f=v;});}
   if(d.key){state.choice[d.key]=e.target.value;applyCharging();table();reqUI();}
 });
+$('#tx').addEventListener('click',e=>{const b=e.target.closest('button.caseBtn');if(b)openCase(b.dataset.key);});
 $('#fMatch').addEventListener('change',table);$('#chkT').addEventListener('change',table);
 ['fProv','fPlate'].forEach(id=>$('#'+id).addEventListener('change',table));
 $('#fSearch').addEventListener('input',table);
@@ -949,7 +1085,7 @@ $('#btnExport').addEventListener('click',async()=>{
 
 /* ================= Completed sheets (with charging codes) ================= */
 const LS_KEY='tollDash.months.v1';
-const cs={months:{},month:'',prov:'',dim:'k'};
+const cs={months:{},month:'',fy:null,afy:'',prov:'',dim:'k'};
 function lsLoad(){try{const j=JSON.parse(localStorage.getItem(LS_KEY)||'{}');for(const k in j)j[k].rows.forEach(r=>{if(r.b)r.b=new Date(r.b);});return j;}catch(e){return {};}}
 let lsOk=true;
 function lsSave(){try{localStorage.setItem(LS_KEY,JSON.stringify(cs.months));}catch(e){lsOk=false;}}
@@ -1053,8 +1189,13 @@ $('#cDim').innerHTML=Object.keys(DIMS).map(k=>`<option value="${k}">${DIMS[k][0]
 const dv=(r,k)=>{const v=DIMS[k][1](r);return v==null||v===''?'(blank)':v==='#'?'# (none)':String(v);};
 const amt=r=>{if(r.kind==='reload')return 0;const p=(r.pct==null?100:r.pct)/100;return (r.kind==='credit'?-(r.e||0):(r.g||0))*p;};
 const sortedMonths=()=>Object.values(cs.months).sort((a,b)=>a.key<b.key?-1:1);
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONL=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const fyOf=key=>{const [y,mo]=key.split('-').map(Number);return String((mo>=10?y+1:y)%100).padStart(2,'0');};
+function fyKeys(fy){const y0=2000+Number(fy)-1;return [10,11,12,1,2,3,4,5,6,7,8,9].map(mo=>(mo>=10?y0:y0+1)+'-'+String(mo).padStart(2,'0'));}
+const fyLabel=fy=>'FY'+fy+' · Oct '+(1999+Number(fy))+' – Sep '+(2000+Number(fy));
 function csRows(all){
-  return sortedMonths().filter(m=>all||!cs.month||m.key===cs.month).flatMap(m=>m.rows).filter(r=>r.kind!=='reload'&&(!cs.prov||r.prov===cs.prov));
+  return sortedMonths().filter(m=>(all||!cs.month||m.key===cs.month)&&(!cs.fy||fyOf(m.key)===cs.fy)).flatMap(m=>m.rows).filter(r=>r.kind!=='reload'&&(!cs.prov||r.prov===cs.prov));
 }
 const needs=r=>{const w=[];if(!r.k)w.push('Account Code');if(r.pct==null)w.push('%');if(r.kind==='toll'&&r.g>0&&!r.req)w.push('Requestor');return w;};
 
@@ -1065,11 +1206,17 @@ function renderCharge(){
   const res=$('#chResults');res.style.display=ms.length?'block':'none';
   if(!ms.length)return;
   const ms$=$('#cMonth');
-  ms$.innerHTML='<option value="">All loaded months ('+ms.length+')</option>'+ms.map(m=>`<option value="${m.key}">${esc(m.label)}</option>`).join('');
-  if(cs.month&&!cs.months[cs.month])cs.month='';
+  const fys=[...new Set(ms.map(m=>fyOf(m.key)))].sort();
+  if(cs.fy===null||(cs.fy&&!fys.includes(cs.fy)))cs.fy=fys[fys.length-1]||'';
+  $('#cFy').innerHTML='<option value="">All fiscal years</option>'+fys.map(f=>`<option value="${f}">${esc(fyLabel(f))}</option>`).join('');
+  $('#cFy').value=cs.fy;
+  if(cs.fy)cs.afy=cs.fy;
+  const msF=ms.filter(m=>!cs.fy||fyOf(m.key)===cs.fy);
+  ms$.innerHTML='<option value="">All loaded months ('+msF.length+')</option>'+msF.map(m=>`<option value="${m.key}">${esc(m.label)}</option>`).join('');
+  if(cs.month&&!msF.some(m=>m.key===cs.month))cs.month='';
   ms$.value=cs.month;$('#cProv').value=cs.prov;$('#cDim').value=cs.dim;
   const rows=csRows();
-  const period=cs.month?cs.months[cs.month].label:(ms.length===1?ms[0].label:ms[0].label+' – '+ms[ms.length-1].label);
+  const period=cs.month?cs.months[cs.month].label:(msF.length===1?msF[0].label:(msF.length?msF[0].label+' – '+msF[msF.length-1].label:'no data'));
 
   // KPIs
   const gross=sum(rows.filter(r=>r.kind==='toll'),r=>amt(r)),cred=sum(rows.filter(r=>r.kind==='credit'),r=>-amt(r));
@@ -1083,9 +1230,10 @@ function renderCharge(){
     K('Refunds / credits',peso(cred),'already netted off')+
     K('Lines to complete',String(bad.length),bad.length?'missing codes':'all lines coded');
   // trend
-  const trend=ms.map(m=>{const parts={};let tot=0;m.rows.filter(r=>r.kind!=='reload'&&(!cs.prov||r.prov===cs.prov)).forEach(r=>{parts[r.prov]=(parts[r.prov]||0)+amt(r);tot+=amt(r);});
+  const slots=cs.fy?fyKeys(cs.fy).map(k=>cs.months[k]||{key:k,label:MONL[+k.slice(5)-1]+' '+k.slice(0,4)+' (not loaded)',rows:[]}):ms;
+  const trend=slots.map(m=>{const parts={};let tot=0;m.rows.filter(r=>r.kind!=='reload'&&(!cs.prov||r.prov===cs.prov)).forEach(r=>{parts[r.prov]=(parts[r.prov]||0)+amt(r);tot+=amt(r);});
     for(const k in parts)if(parts[k]<0)parts[k]=0;
-    return {label:m.label.slice(0,3)+" '"+m.key.slice(2,4),full:m.label,parts,total:tot};});
+    return {label:MON[+m.key.slice(5)-1]+" '"+m.key.slice(2,4),full:m.label,parts,total:tot};});
   vbar($('#cTrend'),trend);
   // by dimension
   const g=new Map();
@@ -1122,6 +1270,7 @@ function renderCharge(){
   // warn
   const wbx=$('#cWarn');wbx.style.display=bad.length?'block':'none';wbx.textContent=bad.length?bad.length+' line(s) are missing charging codes — see “Lines that need coding” below.':'';
   checkSoa();
+  renderAnnual();
 }
 function comboList(rows){
   const m=new Map();
@@ -1153,6 +1302,83 @@ $('#chips').addEventListener('click',e=>{
   if(e.target.id==='clrAll'){e.preventDefault();cs.months={};cs.month='';lsSave();renderCharge();}
 });
 $('#cMonth').addEventListener('change',e=>{cs.month=e.target.value;renderCharge();});
+$('#cFy').addEventListener('change',e=>{cs.fy=e.target.value;cs.month='';renderCharge();});
+$('#aFy').addEventListener('change',e=>{cs.afy=e.target.value;renderAnnual();});
+
+/* ================= Annual (fiscal-year) summary: Oct -> Sep ================= */
+function annualData(){
+  const ms=sortedMonths();const fys=[...new Set(ms.map(m=>fyOf(m.key)))].sort();
+  const fy=(cs.afy&&fys.includes(cs.afy))?cs.afy:(fys[fys.length-1]||'');
+  if(!fy)return null;
+  const keys=fyKeys(fy);
+  const mon=keys.map(k=>({key:k,label:MON[+k.slice(5)-1]+" '"+k.slice(2,4),loaded:!!cs.months[k]}));
+  const rowsBy=keys.map(k=>cs.months[k]?cs.months[k].rows.filter(r=>r.kind!=='reload'&&(!cs.prov||r.prov===cs.prov)):[]);
+  const sumv=fn=>rowsBy.map(rs=>r2(sum(rs.filter(fn),amt)));
+  const tot=v=>r2(sum(v,x=>x));
+  const provs=['Autosweep','Easytrip'].filter(p=>!cs.prov||p===cs.prov).map(p=>{const v=sumv(r=>r.prov===p);return{label:p,vals:v,total:tot(v)};});
+  const net=rowsBy.map((_,i)=>r2(sum(provs,p=>p.vals[i])));
+  const withDept=cs.dim==='k';
+  const g=new Map();
+  rowsBy.forEach((rs,i)=>rs.forEach(r=>{const l=dv(r,cs.dim),d=withDept?dv(r,'t1'):'',key=l+'\u0001'+d;if(!g.has(key))g.set(key,{label:l,dept:d,vals:Array(12).fill(0)});g.get(key).vals[i]+=amt(r);}));
+  const dimRows=[...g.values()].map(o=>({...o,vals:o.vals.map(r2),total:tot(o.vals.map(r2))})).sort((a,b)=>b.total-a.total);
+  const dimNet=mon.map((_,i)=>r2(sum(dimRows,o=>o.vals[i])));
+  return {fy,title:fyLabel(fy),mon,provs,net,netTotal:tot(net),dimName:DIMS[cs.dim][0],withDept,dimRows,dimNet,dimTotal:tot(dimNet),loaded:mon.filter(m=>m.loaded).length};
+}
+function renderAnnual(){
+  const d=annualData();const card=$('#annualCard');
+  if(!d){card.style.display='none';return;}card.style.display='';
+  const fys=[...new Set(sortedMonths().map(m=>fyOf(m.key)))].sort();
+  $('#aFy').innerHTML=fys.map(f=>`<option value="${f}">${esc(fyLabel(f))}</option>`).join('');$('#aFy').value=d.fy;
+  $('#aTitle').textContent='Annual summary — '+d.title;
+  const miss=d.mon.filter(m=>!m.loaded).map(m=>m.label.split(' ')[0]);
+  $('#aCap').textContent='Net charged per month, October to September'+(cs.prov?' · '+cs.prov+' only':'')+'. '+d.loaded+' of 12 months loaded'+(miss.length?' (not loaded: '+miss.join(', ')+')':'')+'.';
+  const nc=d.withDept?2:1;
+  const cell=(v,m)=>m.loaded&&v?`<td>${fmt(v)}</td>`:`<td class="na">–</td>`;
+  const line=(o,i)=>`<tr><td class="l">${esc(o.label)}</td>${d.withDept?`<td class="l">${esc(o.dept||'')}</td>`:''}${o.vals.map((v,i)=>cell(v,d.mon[i])).join('')}<td class="tc">${fmt(o.total)}</td></tr>`;
+  const sec=t=>`<tr class="sec"><td colspan="${nc+13}">${esc(t)}</td></tr>`;
+  const totRow=(lab,vals,t)=>`<tr class="tot"><td class="l">${lab}</td>${d.withDept?'<td></td>':''}${vals.map((v,i)=>cell(v,d.mon[i])).join('')}<td class="tc">${fmt(t)}</td></tr>`;
+  const pad=d.withDept?'<th class="l"></th>':'';
+  $('#aTbl').innerHTML='<thead><tr><th>&nbsp;</th>'+pad+d.mon.map(m=>`<th class="${m.loaded?'':'na'}" title="${m.loaded?'':'not loaded'}">${m.label}</th>`).join('')+'<th class="tc">Total</th></tr></thead><tbody>'+
+    sec('By provider')+d.provs.map(line).join('')+totRow('Net total',d.net,d.netTotal)+
+    sec('By '+d.dimName.toLowerCase()+(d.withDept?' and department (T1)':''))+
+    (d.withDept?'':'')+d.dimRows.map(line).join('')+totRow('Total',d.dimNet,d.dimTotal)+'</tbody>';
+  const th=$('#aTbl thead tr');if(d.withDept){th.children[1].textContent='Department (T1)';}th.children[0].textContent=d.dimName;
+}
+$('#aPrint').addEventListener('click',()=>{
+  document.body.classList.add('print-rep');
+  const done=()=>{document.body.classList.remove('print-rep');window.removeEventListener('afterprint',done);};
+  window.addEventListener('afterprint',done);window.print();setTimeout(()=>{if(!document.hidden)done();},1500);
+});
+$('#aXls').addEventListener('click',async()=>{
+  const d=annualData();if(!d)return;
+  const wb=new ExcelJS.Workbook();const ws=wb.addWorksheet(('FY'+d.fy+' Annual Summary').slice(0,31),{views:[{showGridLines:false,state:'frozen',ySplit:3,xSplit:d.withDept?2:1}]});
+  const nc=d.withDept?2:1,last=nc+13;
+  const L=n=>{let t='';while(n>0){const m=(n-1)%26;t=String.fromCharCode(65+m)+t;n=Math.floor((n-1)/26);}return t;};
+  ws.getColumn(1).width=d.withDept?18:30;if(d.withDept)ws.getColumn(2).width=18;
+  for(let c=nc+1;c<=nc+12;c++)ws.getColumn(c).width=13;ws.getColumn(last).width=16;
+  ws.mergeCells(1,1,1,last);const t=ws.getCell(1,1);t.value='Toll Fee Annual Summary — '+d.title+(cs.prov?' ('+cs.prov+')':'');t.font={name:'Arial',size:16,bold:true};t.alignment={horizontal:'center',vertical:'middle'};ws.getRow(1).height=30;
+  ws.mergeCells(2,1,2,last);const st=ws.getCell(2,1);st.value=d.loaded+' of 12 months loaded · net charged (debit × %, credits deducted) · fiscal year runs October to September';st.font={name:'Arial',size:9,italic:true};st.alignment={horizontal:'center'};
+  const hr=ws.getRow(3);hr.height=24;
+  const hd=[d.dimName].concat(d.withDept?['Department (T1)']:[]).concat(d.mon.map(m=>m.label),['Total']);
+  hd.forEach((h,i)=>{const c=hr.getCell(i+1);c.value=h;c.font={name:'Arial',size:10,bold:true};c.alignment={horizontal:'center',vertical:'middle'};c.border=BORDER;c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE7E6E6'}};});
+  let r=4;
+  const secRow=txt=>{ws.mergeCells(r,1,r,last);const c=ws.getCell(r,1);c.value=txt;c.font={name:'Arial',size:10,bold:true};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF2F2F2'}};r++;};
+  const dataRow=(o)=>{const row=ws.getRow(r);row.getCell(1).value=o.label;if(d.withDept)row.getCell(2).value=o.dept||null;
+    o.vals.forEach((v,i)=>{const c=row.getCell(nc+1+i);c.value=(d.mon[i].loaded&&v)?v:null;c.numFmt='#,##0.00';});
+    row.getCell(last).value={formula:`SUM(${L(nc+1)}${r}:${L(nc+12)}${r})`,result:o.total};row.getCell(last).numFmt='#,##0.00';
+    for(let c=1;c<=last;c++){const cell=row.getCell(c);cell.border=BORDER;cell.font={name:'Arial',size:10,bold:c===last};if(c>nc)cell.alignment={horizontal:'right'};}
+    r++;};
+  const totRow=(lab,from,to,vals,tt)=>{const row=ws.getRow(r);row.getCell(1).value=lab;
+    for(let i=0;i<12;i++){const col=L(nc+1+i);const c=row.getCell(nc+1+i);c.value={formula:`SUM(${col}${from}:${col}${to})`,result:vals[i]};c.numFmt='#,##0.00';}
+    row.getCell(last).value={formula:`SUM(${L(nc+1)}${r}:${L(nc+12)}${r})`,result:tt};row.getCell(last).numFmt='#,##0.00';
+    for(let c=1;c<=last;c++){const cell=row.getCell(c);cell.font={name:'Arial',size:10,bold:true};cell.fill=YELLOW;cell.border=BORDER;if(c>nc)cell.alignment={horizontal:'right'};}
+    r++;};
+  secRow('By provider');const p0=r;d.provs.forEach(dataRow);totRow('Net total',p0,r-1,d.net,d.netTotal);
+  secRow('By '+d.dimName.toLowerCase()+(d.withDept?' and department (T1)':''));const g0=r;d.dimRows.forEach(dataRow);
+  if(d.dimRows.length)totRow('Total',g0,r-1,d.dimNet,d.dimTotal);
+  ws.pageSetup={orientation:'landscape',fitToPage:true,fitToWidth:1,fitToHeight:0};
+  download(await wb.xlsx.writeBuffer(),'Toll_Annual_Summary_FY'+d.fy+(cs.prov?'_'+cs.prov:'')+'.xlsx');
+});
 $('#cProv').addEventListener('change',e=>{cs.prov=e.target.value;renderCharge();});
 $('#cDim').addEventListener('change',e=>{cs.dim=e.target.value;renderCharge();});
 $('#btnCombo').addEventListener('click',async()=>{
@@ -1182,6 +1408,59 @@ function showTab(w){
 $('#tabSoa').addEventListener('click',()=>showTab('soa'));
 $('#tabChg').addEventListener('click',()=>showTab('chg'));
 renderCharge();
+
+/* ================= Backup & restore ================= */
+const BK_SET=['alias','unmatched','dReq','dK','dT0','dT1','dT9'];
+const BK_KEY='tollDash.lastBackup';
+const blobToData=b=>new Promise((res,rej)=>{const f=new FileReader();f.onload=()=>res(f.result);f.onerror=()=>rej(f.error);f.readAsDataURL(b);});
+function bkInfo(){
+  const el=$('#bkInfo');let last=null;try{last=localStorage.getItem(BK_KEY);}catch(e){}
+  const has=Object.keys(cs.months).length||EV.cases.size;
+  if(last){const days=Math.floor((Date.now()-new Date(last))/864e5);el.textContent='Last backup: '+last.slice(0,10)+(days>=30?' ('+days+' days ago)':'');el.className='bkinfo'+(days>=30&&has?' stale':'');}
+  else{el.textContent=has?'No backup yet — save one':'';el.className='bkinfo'+(has?' stale':'');}
+}
+function dlBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
+async function backupAll(){
+  const info=$('#bkInfo');info.textContent='Preparing backup…';
+  try{
+    const cases=[];
+    for(const c of EV.cases.values()){
+      const cp={...c};
+      for(const g of ['ev','rev']){cp[g]=[];for(const a of (c[g]||[])){const {blob,...rest}=a;rest.data=blob?await blobToData(blob):null;cp[g].push(rest);}}
+      cases.push(cp);
+    }
+    const settings={};BK_SET.forEach(id=>{const e=$('#'+id);if(e)settings[id]=e.value;});
+    const out={app:'toll-fee-dashboard',version:1,created:new Date().toISOString(),months:cs.months,cases,settings,view:{dim:cs.dim,prov:cs.prov}};
+    const d=new Date(),ymd=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    dlBlob(new Blob([JSON.stringify(out)],{type:'application/json'}),'Toll_Dashboard_Backup_'+ymd+'.json');
+    try{localStorage.setItem(BK_KEY,out.created);}catch(e){}
+    bkInfo();info.textContent='Backed up: '+Object.keys(cs.months).length+' month(s), '+cases.length+' report(s)';
+  }catch(e){console.error(e);info.textContent='Backup failed: '+(e&&e.message||e);info.className='bkinfo stale';}
+}
+async function restoreAll(file){
+  const info=$('#bkInfo');
+  try{
+    const j=JSON.parse(await file.text());
+    if(!j||j.app!=='toll-fee-dashboard'||typeof j.months!=='object')throw new Error('This is not a Toll Dashboard backup file.');
+    const nm=Object.keys(j.months).length,nc=(j.cases||[]).length;
+    const ex=Object.keys(j.months).filter(k=>cs.months[k]).length+(j.cases||[]).filter(c=>EV.cases.has(c.id)).length;
+    if(!confirm('Restore '+nm+' month(s) and '+nc+' evidence report(s) from this backup (made '+String(j.created||'').slice(0,10)+')?\n\nMonths/reports that already exist here ('+ex+') will be replaced by the backup version. Everything else is kept.'))return;
+    for(const k in j.months){const m=j.months[k];m.rows.forEach(r=>{if(r.b)r.b=new Date(r.b);});cs.months[k]=m;}
+    for(const c of (j.cases||[])){
+      for(const g of ['ev','rev']){const arr=[];for(const a of (c[g]||[])){const {data,...rest}=a;if(data){try{rest.blob=await (await fetch(data)).blob();}catch(e){continue;}}arr.push(rest);}c[g]=arr;}
+      try{if(EV.db)await idb('readwrite',s=>s.put(c));}catch(e){EV.ok=false;}
+      EV.cases.set(c.id,c);
+    }
+    BK_SET.forEach(id=>{const e=$('#'+id);if(e&&j.settings&&j.settings[id]!=null){e.value=j.settings[id];e.dispatchEvent(new Event('change'));}});
+    cs.fy=null;cs.month='';
+    lsSave();renderCharge();renderLog();if(state.out.length)table();bkInfo();
+    info.textContent='Restored '+nm+' month(s), '+nc+' report(s)';
+  }catch(e){console.error(e);info.textContent='Restore failed: '+(e&&e.message||e);info.className='bkinfo stale';}
+}
+$('#btnBackup').addEventListener('click',backupAll);
+$('#btnRestore').addEventListener('click',()=>$('#bkFile').click());
+$('#bkFile').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)restoreAll(f);});
+setTimeout(bkInfo,400);
 
 /* ================= Request file: look up charging codes ================= */
 const REQ={rowsAll:[],byPlate:new Map(),files:[]};
@@ -1344,7 +1623,183 @@ $('#reqChips').addEventListener('click',e=>{
 });
 ['unmatched','dReq','dK','dT0','dT1','dT9'].forEach(id=>$('#'+id).addEventListener('change',()=>{if(state.rows.length){applyCharging();table();}reqUI();}));
 
-window.__state=state;window.__cs=cs;window.__req={REQ,matchRow};
+/* ================= Evidence for "no request found" ================= */
+const EV={cases:new Map(),db:null,draft:null,urls:[],dirty:false,active:'ev',ok:true};
+const todayIso=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const fmtSize=n=>n>=1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB';
+function evOpenDb(){
+  return new Promise(res=>{
+    try{
+      const rq=indexedDB.open('tollDashEvidence',1);
+      rq.onupgradeneeded=()=>rq.result.createObjectStore('cases',{keyPath:'id'});
+      rq.onsuccess=()=>res(rq.result);rq.onerror=()=>res(null);rq.onblocked=()=>res(null);
+    }catch(e){res(null);}
+  });
+}
+const idb=(mode,fn)=>new Promise((res,rej)=>{
+  const tx=EV.db.transaction('cases',mode),st=tx.objectStore('cases');let r;
+  try{r=fn(st);}catch(e){rej(e);return;}
+  tx.oncomplete=()=>res(r&&r.result);tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error);
+});
+(async()=>{
+  EV.db=await evOpenDb();
+  if(EV.db){try{(await idb('readonly',s=>s.getAll())||[]).forEach(c=>EV.cases.set(c.id,c));}catch(e){EV.ok=false;}}
+  else EV.ok=false;
+  renderLog();if(state.out.length)table();
+})();
+function noReqBadge(key){
+  const c=EV.cases.get(key),n=c?(c.ev.length+c.rev.length):0,clip=n?` · ${n} file${n>1?'s':''}`:'';
+  if(!c)return `<button type="button" class="badge-s none caseBtn" data-key="${esc(key)}" title="Click to report and attach evidence">✗ No request</button>`;
+  if(c.status==='resolved')return `<button type="button" class="badge-s ok caseBtn" data-key="${esc(key)}" title="Resolved ${esc(c.resolvedOn||'')} — click to view the evidence">✓ Resolved${clip}</button>`;
+  return `<button type="button" class="badge-s rev caseBtn" data-key="${esc(key)}" title="Reported ${esc(c.reportedOn||'')} — click to update">! Reported${clip}</button>`;
+}
+function caseLines(key){
+  const m=new Map();
+  state.out.forEach(o=>{if(o.key===key&&o.kind==='toll'&&!m.has(o.bi))m.set(o.bi,{prov:o.prov,time:o.tm||'',tollway:o.c||'',entry:o.d||'',amount:o.g||0});});
+  return [...m.values()];
+}
+function openCase(key){
+  const ex=EV.cases.get(key);
+  const lines=caseLines(key);
+  const [plate,date]=key.split('|');
+  const base=ex?{...ex,ev:[...ex.ev],rev:[...ex.rev]}:{id:key,plate,date,lines:[],reportedOn:todayIso(),by:'',notes:'',status:'open',resolvedOn:'',resBy:'',resNotes:'',ev:[],rev:[],created:Date.now()};
+  if(lines.length)base.lines=lines;
+  EV.draft=base;EV.dirty=false;EV.isNew=!ex;
+  const d=$('#evDlg');
+  $('#evTitle').textContent='No request found · '+base.plate+' · '+(base.date||'');
+  const tot=sum(base.lines,l=>l.amount);
+  $('#evSum').innerHTML=`<table><thead><tr><th>Provider</th><th>Time</th><th>Tollway</th><th>Entry</th><th class="r">Amount</th></tr></thead><tbody>`+
+    base.lines.map(l=>`<tr><td>${esc(l.prov)}</td><td>${esc(l.time)}</td><td>${esc(l.tollway)}</td><td>${esc(l.entry)}</td><td class="r">${fmt(l.amount)}</td></tr>`).join('')+
+    `</tbody><tfoot><tr><td colspan="4"><b>${base.lines.length} toll line${base.lines.length===1?'':'s'} with no VR / request on this plate and date</b></td><td class="r"><b>${fmt(tot)}</b></td></tr></tfoot></table>`;
+  $('#evRepDate').value=base.reportedOn||todayIso();$('#evBy').value=base.by||'';$('#evNotes').value=base.notes||'';
+  document.querySelectorAll('input[name=evStatus]').forEach(r=>r.checked=r.value===base.status);
+  $('#evResDate').value=base.resolvedOn||'';$('#evResBy').value=base.resBy||'';$('#evResNotes').value=base.resNotes||'';
+  $('#evDel').style.display=ex?'':'none';
+  $('#evMsg').textContent=EV.ok?'':'Evidence cannot be stored in this browser here, so it will be lost when you close the page.';
+  $('#evMsg').className='evmsg warn';
+  renderEv();evResState();
+  if(!d.open)d.showModal();
+}
+function evResState(){
+  const res=document.querySelector('input[name=evStatus]:checked').value==='resolved';
+  ['evResDate','evResBy','evResNotes'].forEach(id=>$('#'+id).disabled=!res);
+  document.querySelectorAll('[data-g=rev] button').forEach(b=>b.disabled=!res);
+  if(res&&!$('#evResDate').value)$('#evResDate').value=todayIso();
+}
+function revokeUrls(){EV.urls.forEach(u=>URL.revokeObjectURL(u));EV.urls=[];}
+function renderEv(){
+  revokeUrls();
+  const mk=(arr,host,g)=>{
+    $(host).innerHTML=arr.map((a,i)=>{
+      const url=URL.createObjectURL(a.blob);EV.urls.push(url);
+      const img=/^image\//.test(a.type);
+      const ext=(a.name.split('.').pop()||'file').slice(0,4).toUpperCase();
+      return `<div class="evitem">${img?`<a href="${url}" target="_blank" rel="noopener"><img class="th" src="${url}" alt="${esc(a.name)}"></a>`:`<span class="th">${esc(ext)}</span>`}`+
+        `<div class="nm">${esc(a.name)}<small>${fmtSize(a.size)} · added ${esc(a.added||'')}</small></div>`+
+        `<a class="btn" href="${url}" target="_blank" rel="noopener">Open</a><a class="btn" href="${url}" download="${esc(a.name)}">Download</a>`+
+        `<button type="button" class="danger" data-rm="${g}:${i}" aria-label="Remove ${esc(a.name)}">Remove</button></div>`;
+    }).join('');
+  };
+  mk(EV.draft.ev,'#lEv','ev');mk(EV.draft.rev,'#lRev','rev');
+}
+function addFiles(files,g){
+  const msg=$('#evMsg');msg.textContent='';msg.className='evmsg';
+  files=[...files];
+  for(const f of files){
+    if(f.size>25*1048576){msg.textContent=f.name+' is larger than 25 MB and was skipped.';continue;}
+    EV.draft[g].push({id:Date.now()+'-'+Math.random().toString(36).slice(2,7),name:f.name||'file',type:f.type||'application/octet-stream',size:f.size,blob:f,added:todayIso()});
+    EV.dirty=true;
+  }
+  renderEv();
+}
+$('#evDlg').addEventListener('click',e=>{
+  const add=e.target.closest('.evadd');
+  if(add){EV.active=add.dataset.g;$('#evFile').click();return;}
+  const rm=e.target.closest('[data-rm]');
+  if(rm){const [g,i]=rm.dataset.rm.split(':');EV.draft[g].splice(+i,1);EV.dirty=true;renderEv();}
+});
+$('#evFile').addEventListener('change',e=>{addFiles(e.target.files,EV.active);e.target.value='';});
+document.querySelectorAll('#evDlg .evgroup').forEach(grp=>{
+  const g=grp.dataset.g,zone=grp.querySelector('.evdrop');
+  ['dragenter','dragover'].forEach(ev=>grp.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();zone.classList.add('drag');}));
+  grp.addEventListener('dragleave',e=>{e.stopPropagation();zone.classList.remove('drag');});
+  grp.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();zone.classList.remove('drag');
+    if(g==='rev'&&document.querySelector('input[name=evStatus]:checked').value!=='resolved'){$('#evMsg').textContent='Set the status to Resolved before adding resolution evidence.';$('#evMsg').className='evmsg';return;}
+    addFiles(e.dataTransfer.files,g);});
+  grp.addEventListener('focusin',()=>{EV.active=g;});
+});
+// stop file drops inside the dialog from reaching the page-level PDF / Excel importer
+$('#evDlg').addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();});
+$('#evDlg').addEventListener('dragover',e=>{e.preventDefault();e.stopPropagation();});
+$('#evDlg').addEventListener('paste',e=>{
+  const items=[...(e.clipboardData&&e.clipboardData.items||[])].filter(i=>i.kind==='file');
+  if(!items.length)return;
+  e.preventDefault();
+  const g=(EV.active==='rev'&&document.querySelector('input[name=evStatus]:checked').value==='resolved')?'rev':'ev';
+  const d=new Date(),stamp=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+String(d.getSeconds()).padStart(2,'0');
+  const files=items.map((i,n)=>{const f=i.getAsFile();return f&&!f.name||f&&/^image\.\w+$/.test(f.name)?new File([f],'screenshot-'+stamp+(n?'-'+n:'')+'.'+((f.type.split('/')[1])||'png'),{type:f.type}):f;}).filter(Boolean);
+  addFiles(files,g);
+});
+document.querySelectorAll('input[name=evStatus]').forEach(r=>r.addEventListener('change',()=>{EV.dirty=true;evResState();}));
+['evRepDate','evBy','evNotes','evResDate','evResBy','evResNotes'].forEach(id=>$('#'+id).addEventListener('input',()=>{EV.dirty=true;}));
+function closeDlg(force){
+  if(!force&&EV.dirty&&!confirm('Discard your changes to this report?'))return;
+  $('#evDlg').close();
+}
+$('#evClose').addEventListener('click',()=>closeDlg());
+$('#evCancel').addEventListener('click',()=>closeDlg());
+$('#evDlg').addEventListener('cancel',e=>{if(EV.dirty&&!confirm('Discard your changes to this report?'))e.preventDefault();});
+$('#evDlg').addEventListener('close',()=>{revokeUrls();EV.draft=null;});
+$('#evSave').addEventListener('click',async()=>{
+  const c=EV.draft,msg=$('#evMsg');
+  c.reportedOn=$('#evRepDate').value;c.by=$('#evBy').value.trim();c.notes=$('#evNotes').value.trim();
+  c.status=document.querySelector('input[name=evStatus]:checked').value;
+  c.resolvedOn=c.status==='resolved'?$('#evResDate').value:'';c.resBy=$('#evResBy').value.trim();c.resNotes=$('#evResNotes').value.trim();
+  msg.className='evmsg';
+  if(!c.reportedOn){msg.textContent='Enter the date reported.';return;}
+  if(!c.notes&&!c.ev.length){msg.textContent='Add a clarification note or at least one piece of evidence.';return;}
+  if(c.status==='resolved'){
+    if(!c.resolvedOn){msg.textContent='Enter the date resolved.';return;}
+    if(c.resolvedOn<c.reportedOn){msg.textContent='The resolved date is before the reported date.';return;}
+    if(!c.resNotes&&!c.rev.length){msg.textContent='Describe how it was resolved or attach evidence of the resolution.';return;}
+  }
+  c.updated=Date.now();
+  try{if(EV.db)await idb('readwrite',s=>s.put(c));}catch(err){console.error(err);msg.textContent='Saved for this session only — the browser refused to store the files ('+(err&&err.name||'error')+').';msg.className='evmsg warn';EV.ok=false;}
+  EV.cases.set(c.id,c);EV.dirty=false;
+  $('#evDlg').close();table();renderLog();
+});
+$('#evDel').addEventListener('click',async()=>{
+  const c=EV.draft;if(!c||!confirm('Delete this report and its evidence files?'))return;
+  try{if(EV.db)await idb('readwrite',s=>s.delete(c.id));}catch(e){}
+  EV.cases.delete(c.id);EV.dirty=false;$('#evDlg').close();table();renderLog();
+});
+
+/* ----- evidence log ----- */
+function renderLog(){
+  const arr=[...EV.cases.values()].sort((a,b)=>(a.status===b.status?0:a.status==='open'?-1:1)||(b.date||'').localeCompare(a.date||''));
+  $('#logCard').style.display=arr.length?'':'none';
+  if(!arr.length)return;
+  const dsp=s=>s?esc(s.length>70?s.slice(0,68)+'…':s):'';
+  $('#logTbl').innerHTML='<thead><tr><th>Plate</th><th>Toll date</th><th class="r">Lines</th><th class="r">Amount</th><th>Reported</th><th>Clarification</th><th>Status</th><th>Resolved</th><th>Resolution</th><th class="r">Files</th><th></th></tr></thead><tbody>'+
+    arr.map(c=>`<tr><td>${esc(c.plate)}</td><td>${esc(c.date||'')}</td><td class="r">${c.lines.length}</td><td class="r">${fmt(sum(c.lines,l=>l.amount))}</td><td>${esc(c.reportedOn||'')}</td><td class="d">${dsp(c.notes)}</td><td>${c.status==='resolved'?'<span class="badge-s ok">✓ Resolved</span>':'<span class="badge-s rev">! Open</span>'}</td><td>${esc(c.resolvedOn||'')}</td><td class="d">${dsp(c.resNotes)}</td><td class="r">${c.ev.length+c.rev.length}</td><td><button type="button" data-open="${esc(c.id)}">Open</button></td></tr>`).join('')+'</tbody>';
+}
+$('#logTbl').addEventListener('click',e=>{const b=e.target.closest('button[data-open]');if(b)openCase(b.dataset.open);});
+$('#btnLog').addEventListener('click',async()=>{
+  const arr=[...EV.cases.values()].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const wb=new ExcelJS.Workbook();const ws=wb.addWorksheet('No-request log',{views:[{showGridLines:false,state:'frozen',ySplit:2}]});
+  const hdr=['Plate No.','Toll Date','Provider','Toll Lines','Amount','Date Reported','Reported By','Clarification','Status','Date Resolved','Resolved By','How Resolved','Report Evidence (files)','Resolution Evidence (files)'];
+  [14,14,14,10,14,14,16,48,12,14,16,48,36,36].forEach((w,i)=>ws.getColumn(i+1).width=w);
+  ws.mergeCells(1,1,1,hdr.length);const t1=ws.getCell(1,1);t1.value='Toll entries with no request found — evidence log';t1.font={name:'Arial',size:16,bold:true};t1.alignment={horizontal:'center',vertical:'middle'};ws.getRow(1).height=32;
+  const hr=ws.getRow(2);hr.height=30;hdr.forEach((h,i)=>{const c=hr.getCell(i+1);c.value=h;c.font={name:'Arial',size:10,bold:true};c.alignment={horizontal:'center',vertical:'middle',wrapText:true};c.border=BORDER;});
+  arr.forEach((c,ri)=>{
+    const row=ws.getRow(3+ri);
+    const v=[c.plate,c.date,[...new Set(c.lines.map(l=>l.prov))].join(', '),c.lines.length,r2(sum(c.lines,l=>l.amount)),c.reportedOn,c.by,c.notes,c.status==='resolved'?'Resolved':'Open',c.resolvedOn,c.resBy,c.resNotes,c.ev.map(a=>a.name).join('\n'),c.rev.map(a=>a.name).join('\n')];
+    v.forEach((x,i)=>{const cell=row.getCell(i+1);cell.value=x===''?null:x;cell.font={name:'Arial',size:10};cell.border=BORDER;cell.alignment={vertical:'top',wrapText:true,horizontal:i===4?'right':'left'};if(i===4)cell.numFmt='#,##0.00';});
+  });
+  download(await wb.xlsx.writeBuffer(),'Toll_No_Request_Evidence_Log.xlsx');
+});
+
+window.__state=state;window.__cs=cs;window.__req={REQ,matchRow};window.__ev=EV;
 })();
 </script>
 </body>
