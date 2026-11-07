@@ -133,6 +133,12 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
 .x{border:0;background:none;font-size:22px;line-height:1;padding:4px 10px;color:var(--ink-2)}
 .evsec{border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px}
 .evsec h3{margin:0;font-size:14px}
+#evVrSel{width:100%;font:inherit;font-size:12.5px;padding:4px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+#evVrFind{font:inherit;font-size:13px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%}
+.vrbtns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.vrbtns button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.vrbtns button#evVrApply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.vrbtns button:disabled{opacity:.5;cursor:default}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 textarea{font:inherit;font-size:13.5px;background:var(--surface);color:var(--ink);border:1px solid var(--axis);border-radius:7px;padding:8px 10px;width:100%;resize:vertical;min-height:70px}
 .seg{display:inline-flex;border:1px solid var(--axis);border-radius:8px;overflow:hidden;width:max-content}
@@ -378,6 +384,13 @@ table.ann td.tc,table.ann th.tc{font-weight:600;border-left:1px solid var(--line
   <div class="dlg-h"><h2 id="evTitle">No request found</h2><button type="button" class="x" id="evClose" aria-label="Close">&times;</button></div>
   <div class="dlg-b">
     <div id="evSum"></div>
+    <section class="evsec" id="secVr">
+      <h3>Fill in the missing VR</h3>
+      <p class="cap" id="vrCap" style="margin:0"></p>
+      <input type="search" id="evVrFind" placeholder="Search VR number, requestor, plate or account code…" aria-label="Search VRs">
+      <select id="evVrSel" size="7" aria-label="VR list"></select>
+      <div class="vrbtns"><button type="button" id="evVrApply">Use this VR for these lines</button><button type="button" id="evVrClear" style="display:none">Remove assigned VR</button><span class="evmsg" id="evVrMsg" role="status"></span></div>
+    </section>
     <section class="evsec" id="secRep">
       <h3>1 &middot; Clarification report</h3>
       <div class="two">
@@ -999,7 +1012,7 @@ function filters(){
 }
 function statGroup(x){
   if(x.kind!=='toll'||!REQ.rowsAll.length)return '';
-  return x.st==='ok'||x.st==='chosen'||x.st==='km'||x.st==='time'?'ok':(x.st==='none'?'none':'review');
+  return x.st==='ok'||x.st==='chosen'||x.st==='km'||x.st==='time'||x.st==='manual'?'ok':(x.st==='none'?'none':'review');
 }
 function table(){
   const fp=$('#fProv').value,fl=$('#fPlate').value,fm=$('#fMatch').value,q=$('#fSearch').value.trim().toLowerCase();
@@ -1022,6 +1035,7 @@ function table(){
         else if(x.st==='none')m=noReqBadge(x.key);
         else if(x.st==='km')m=pick()+' <span class="badge-s ok" title="Two VRs on this plate and date — the longer kilometer record was used">✓ longer km</span>';
         else if(x.st==='time')m=pick()+' <span class="badge-s ok" title="Equal kilometers — the VR travel window containing the toll time was used">✓ by time</span>';
+        else if(x.st==='manual')m=`<button type="button" class="badge-s ok caseBtn" data-key="${esc(x.key)}" title="VR picked by hand — click to change or remove">✓ ${esc(c.vr||'')} · assigned</button>`;
         else if(x.st==='chosen')m=pick()+' <span class="badge-s ok">✓ your pick</span>';
         else m=pick()+' <span class="badge-s rev" title="Equal kilometers — choose the VR">! choose</span>';
         if(x.sumPct!=null&&Math.abs(x.sumPct-100)>0.01&&x.st!=='none')m+=` <span class="badge-s rev" title="Split percentages for this VR add up to ${x.sumPct}%">! ${x.sumPct}%</span>`;
@@ -1042,7 +1056,7 @@ function matchSummary(){
   const nk=new Map();state.out.forEach(o=>{if(o.kind==='toll'&&o.st==='none'&&!nk.has(o.bi))nk.set(o.bi,o.key);});
   let nRes=0,nRep=0;nk.forEach(k=>{const c=EV.cases.get(k);if(c){if(c.status==='resolved')nRes++;else nRep++;}});
   const evNote=(nRes||nRep)?`<span class="badge-s def" title="Click ✗ in the table to open the report">${nRes} resolved · ${nRep} reported</span>`:'';
-  el.innerHTML=`<span class="badge-s ok">✓ ${s.ok} matched</span>`+(s.km?`<span class="badge-s ok" title="Two VRs on the same plate and date; the longer KM was used">of which ${s.km} by longer km</span>`:'')+`<span class="badge-s rev">! ${s.review} need review</span><span class="badge-s none">✗ ${s.none} no request found</span>${evNote}<span style="color:var(--ink-3)">toll lines, matched on plate and date</span>`;
+  el.innerHTML=`<span class="badge-s ok">✓ ${s.ok} matched</span>`+(s.km?`<span class="badge-s ok" title="Two VRs on the same plate and date; the longer KM was used">of which ${s.km} by longer km</span>`:'')+(s.man?`<span class="badge-s ok" title="VR picked by hand from the No request pop-up">of which ${s.man} assigned by hand</span>`:'')+`<span class="badge-s rev">! ${s.review} need review</span><span class="badge-s none">✗ ${s.none} no request found</span>${evNote}<span style="color:var(--ink-3)">toll lines, matched on plate and date</span>`;
 }
 $('#tx').addEventListener('change',e=>{
   const d=e.target.dataset||{};
@@ -1430,7 +1444,7 @@ async function backupAll(){
       cases.push(cp);
     }
     const settings={};BK_SET.forEach(id=>{const e=$('#'+id);if(e)settings[id]=e.value;});
-    const out={app:'toll-fee-dashboard',version:1,created:new Date().toISOString(),months:cs.months,cases,settings,view:{dim:cs.dim,prov:cs.prov}};
+    const out={app:'toll-fee-dashboard',version:1,created:new Date().toISOString(),months:cs.months,cases,settings,manual:MAN,view:{dim:cs.dim,prov:cs.prov}};
     const d=new Date(),ymd=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
     dlBlob(new Blob([JSON.stringify(out)],{type:'application/json'}),'Toll_Dashboard_Backup_'+ymd+'.json');
     try{localStorage.setItem(BK_KEY,out.created);}catch(e){}
@@ -1452,6 +1466,7 @@ async function restoreAll(file){
       EV.cases.set(c.id,c);
     }
     BK_SET.forEach(id=>{const e=$('#'+id);if(e&&j.settings&&j.settings[id]!=null){e.value=j.settings[id];e.dispatchEvent(new Event('change'));}});
+    if(j.manual&&typeof j.manual==='object'){Object.assign(MAN,j.manual);saveMan();if(state.rows.length){applyCharging();table();}}
     cs.fy=null;cs.month='';
     lsSave();renderCharge();renderLog();if(state.out.length)table();bkInfo();
     info.textContent='Restored '+nm+' month(s), '+nc+' report(s)';
@@ -1563,6 +1578,19 @@ function matchRow(plate,dateStr,tm,choice){
   const lines=chosen.linesByDate.get(dateStr)||chosen.allLines;
   return {status,cands:ordered.map(g=>g.vr),kms:ordered.map(km),g:chosen,lines};
 }
+const MAN_KEY='tollDash.manualVR.v1';
+let MAN={};try{MAN=JSON.parse(localStorage.getItem(MAN_KEY)||'{}')||{};}catch(e){MAN={};}
+const saveMan=()=>{try{localStorage.setItem(MAN_KEY,JSON.stringify(MAN));}catch(e){}};
+function manGroup(v){const [pl,vr]=String(v||'').split('||');const pg=REQ.byPlate.get(pl);return pg&&pg.get(vr)||null;}
+function vrOptions(plate){
+  const np=normPlate(plate),out=[];
+  REQ.byPlate.forEach((pg,pl)=>pg.forEach(g=>{
+    const ds=[...g.dates].sort(),km=Math.max(0,...g.kmByDate.values()),codes=[...new Set(g.allLines.map(l=>l.k).filter(x=>x!=null))].join(', ');
+    out.push({val:pl+'||'+g.vr,same:pl===np,vr:g.vr,pl,req:g.req||'',dates:ds.length>1?ds[0]+' to '+ds[ds.length-1]:(ds[0]||''),codes,
+      text:`${g.vr} · ${g.req||'no requestor'} · ${pl} · ${ds.length>1?ds[0]+' to '+ds[ds.length-1]:(ds[0]||'')}${codes?' · '+codes:''}`});
+  }));
+  return out.sort((a,b)=>(b.same-a.same)||(a.vr<b.vr?-1:1));
+}
 const chBlank=()=>({req:null,vr:null,pct:null,k:null,t:Array(10).fill(null)});
 function getDef(){
   const v=id=>cc($('#'+id).value);
@@ -1575,6 +1603,13 @@ function chargingFor(b){
   if(b.kind!=='toll')return {sig:'def-c',lines:[defLine(false)],st:'def'};
   const key=b.a+'|'+dkey(b.b);
   const m=matchRow(b.a,dkey(b.b),b.tm,state.choice[key]);
+  if(m.status==='none'&&MAN[key]){
+    const g=manGroup(MAN[key]);
+    if(g){
+      const lines=g.allLines.map(l=>({req:g.req,vr:g.vr,pct:l.pct,k:l.k,t:l.t}));
+      return {sig:'man|'+MAN[key]+'|'+JSON.stringify(lines.map(l=>[l.pct,l.k,l.t])),lines,st:'manual',cands:[g.vr],kms:[0],vr:g.vr,key,sumPct:sum(lines,l=>l.pct)};
+    }
+  }
   if(m.status==='none'){
     return $('#unmatched').value==='temp'?{sig:'tmp',lines:[defLine(true)],st:'none',key}:{sig:'blank',lines:[chBlank()],st:'none',key};
   }
@@ -1584,7 +1619,7 @@ function chargingFor(b){
 function applyCharging(){
   const base=state.rows,cf=base.map(chargingFor),out=[];
   const stat={ok:0,review:0,none:0,km:0};
-  base.forEach((b,i)=>{if(b.kind!=='toll'||!REQ.rowsAll.length)return;const s=cf[i].st;if(s==='ok'||s==='chosen'||s==='km'||s==='time'){stat.ok++;if(s==='km')stat.km++;}else if(s==='none')stat.none++;else stat.review++;});
+  base.forEach((b,i)=>{if(b.kind!=='toll'||!REQ.rowsAll.length)return;const s=cf[i].st;if(s==='ok'||s==='chosen'||s==='km'||s==='time'||s==='manual'){stat.ok++;if(s==='km')stat.km++;if(s==='manual')stat.man=(stat.man||0)+1;}else if(s==='none')stat.none++;else stat.review++;});
   state.stat=stat;
   let i=0;
   while(i<base.length){
@@ -1677,9 +1712,35 @@ function openCase(key){
   $('#evDel').style.display=ex?'':'none';
   $('#evMsg').textContent=EV.ok?'':'Evidence cannot be stored in this browser here, so it will be lost when you close the page.';
   $('#evMsg').className='evmsg warn';
-  renderEv();evResState();
+  $('#evVrFind').value='';$('#evVrMsg').textContent='';
+  renderEv();evResState();vrPanel();
   if(!d.open)d.showModal();
 }
+function vrPanel(){
+  const key=EV.draft.id,[plate]=key.split('|'),cur=MAN[key];
+  const opts=vrOptions(plate),q=($('#evVrFind').value||'').trim().toLowerCase();
+  const sel=$('#evVrSel');
+  const list=q?opts.filter(o=>(o.text+' '+o.codes).toLowerCase().includes(q)):opts;
+  const mk=o=>`<option value="${esc(o.val)}"${o.val===cur?' selected':''}>${esc(o.text)}</option>`;
+  const same=list.filter(o=>o.same),other=list.filter(o=>!o.same);
+  sel.innerHTML=(same.length?`<optgroup label="Same plate (${esc(plate)})">${same.map(mk).join('')}</optgroup>`:'')+(other.length?`<optgroup label="Other vehicles">${other.map(mk).join('')}</optgroup>`:'');
+  const lines=EV.draft.lines.length;
+  $('#vrCap').textContent=opts.length?(cur?'Currently assigned: '+cur.split('||')[1]+'. Pick another VR below to change it.':`Pick the VR from the request file to charge these ${lines} toll line${lines===1?'':'s'} (${plate}, ${EV.draft.date}). Its requestor, % and charging codes are filled in, including splits.`):'Upload a request / VR file first — there are no VRs to choose from.';
+  $('#evVrApply').disabled=!opts.length;
+  $('#evVrClear').style.display=cur?'':'none';
+  $('#evTitle').textContent=(cur?'VR assigned by hand':'No request found')+' · '+EV.draft.plate+' · '+(EV.draft.date||'');
+}
+$('#evVrFind').addEventListener('input',()=>vrPanel());
+$('#evVrApply').addEventListener('click',()=>{
+  const v=$('#evVrSel').value,m=$('#evVrMsg');
+  if(!v){m.textContent='Select a VR from the list first.';m.className='evmsg';return;}
+  MAN[EV.draft.id]=v;saveMan();applyCharging();table();reqUI();vrPanel();
+  m.textContent='Applied '+v.split('||')[1]+'.';m.className='evmsg ok';
+});
+$('#evVrClear').addEventListener('click',()=>{
+  delete MAN[EV.draft.id];saveMan();applyCharging();table();reqUI();vrPanel();
+  const m=$('#evVrMsg');m.textContent='Assignment removed.';m.className='evmsg';
+});
 function evResState(){
   const res=document.querySelector('input[name=evStatus]:checked').value==='resolved';
   ['evResDate','evResBy','evResNotes'].forEach(id=>$('#'+id).disabled=!res);
